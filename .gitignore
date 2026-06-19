@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Noir / Nargo / Barretenberg outputs
+target/
+proof
+vk
+public_inputs
+*.proof
+*.vk
+*.gz
+
+# Benchmarks
+benchmarks/raw/*
+benchmarks/reports/*
+!benchmarks/raw/.gitkeep
+!benchmarks/reports/.gitkeep
+
+# Datasets can be large; keep placeholders only by default
+datasets/keccak/*
+datasets/poseidon2/*
+!datasets/keccak/.gitkeep
+!datasets/poseidon2/.gitkeep

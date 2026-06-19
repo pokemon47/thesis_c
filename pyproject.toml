@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thesis-c"
+version = "0.1.0"
+description = "Thesis C benchmark pipeline for Noir + Barretenberg."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "eth-utils>=5.0.0",
+  "rlp>=4.0.0",
+  "psutil>=5.9.0",
+  "pandas>=2.2.0",
+  "matplotlib>=3.8.0",
+]
+
+[project.scripts]
+thesis-c = "thesis_c.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["thesis_c*"]

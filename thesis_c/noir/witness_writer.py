@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+
+def _toml_escape(value: str) -> str:
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def _to_toml(value: Any) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, int):
+        return str(value)
+    if isinstance(value, str):
+        return f'"{_toml_escape(value)}"'
+    if isinstance(value, list):
+        return "[" + ", ".join(_to_toml(item) for item in value) + "]"
+    if isinstance(value, tuple):
+        return "[" + ", ".join(_to_toml(item) for item in value) + "]"
+    if isinstance(value, dict):
+        # Inline tables are sufficient for simple benchmark metadata fields.
+        entries = [f"{k}={_to_toml(v)}" for k, v in value.items()]
+        return "{ " + ", ".join(entries) + " }"
+    return f'"{_toml_escape(str(value))}"'
+
+
+def write_prover_toml(path: str | Path, values: dict[str, Any]) -> None:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    lines = [f"{key} = {_to_toml(value)}" for key, value in values.items()]
+    target.write_text("\n".join(lines) + "\n", encoding="utf-8")
