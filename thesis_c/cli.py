@@ -10,13 +10,16 @@ from thesis_c.baseline.verifier_adapter import (
     verify_account_payload,
     verify_storage_payload,
 )
+from thesis_c.hashes.keccak import Keccak256Hash
+from thesis_c.noir.inputs import to_noir_input_map
+from thesis_c.noir.witness_writer import write_prover_toml
+from thesis_c.statements.account_inclusion import AccountInclusionStatement
 from thesis_c.datasets.discovery import discover_dataset
 from thesis_c.datasets.manifest import (
     build_dataset_manifest,
     default_manifest_output_path,
     write_manifest,
 )
-from thesis_c.hashes.keccak import Keccak256Hash
 from thesis_c.hashes.poseidon2 import Poseidon2Hash
 from thesis_c.proof_inputs.loaders import load_proof_path
 
@@ -31,6 +34,43 @@ def _hash_from_name(name: str):
     if name == "poseidon2":
         return Poseidon2Hash.from_environment()
     raise ValueError(f"Unsupported hash: {name}")
+
+
+def generate_witness_command(args: argparse.Namespace) -> int:
+    proof_path = Path(args.input)
+    output_path = Path(args.output)
+
+    payloads = load_proof_path(proof_path)
+    if not payloads:
+        print(f"No proof payloads loaded from {proof_path}")
+        return 2
+
+    try:
+        hash_variant = _hash_from_name(args.hash)
+    except ValueError as exc:
+        print(f"Unsupported hash: {exc}")
+        return 2
+
+    print(f"Loaded payloads: {len(payloads)}")
+    print(f"Selected hash: {args.hash}")
+
+    baseline_results = []
+    for index, payload in enumerate(payloads):
+        result = verify_account_payload(payload, hash_variant)
+        if not result.ok:
+            print(f"Baseline verification failed for payload {index}: {result.error}")
+            return 1
+        baseline_results.append(result)
+
+    statement = AccountInclusionStatement()
+    prepared = statement.prepare(payloads, baseline_results)
+    noir_inputs = to_noir_input_map(prepared)
+    write_prover_toml(output_path, noir_inputs)
+
+    print(f"Selected hash variant ID: {noir_inputs['public_hash_variant_id']}")
+    print(f"Output path: {output_path}")
+    print("Witness generation succeeded")
+    return 0
 
 
 def baseline_command(args: argparse.Namespace) -> int:
@@ -279,6 +319,28 @@ def build_parser() -> argparse.ArgumentParser:
         help="Optional path to write baseline JSON report.",
     )
     baseline.set_defaults(func=baseline_command)
+
+    generate_witness = subparsers.add_parser(
+        "generate-witness",
+        help="Generate a Prover.toml witness from verified account inclusion proofs.",
+    )
+    generate_witness.add_argument(
+        "--input",
+        required=True,
+        help="Input proof file or directory.",
+    )
+    generate_witness.add_argument(
+        "--hash",
+        default="keccak256",
+        choices=("keccak256",),
+        help="Hash variant for witness generation.",
+    )
+    generate_witness.add_argument(
+        "--output",
+        default="circuits/Prover.toml",
+        help="Output path for the generated Prover.toml.",
+    )
+    generate_witness.set_defaults(func=generate_witness_command)
 
     verify_storage = subparsers.add_parser(
         "verify-storage",
