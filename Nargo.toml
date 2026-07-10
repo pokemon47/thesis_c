@@ -1,2 +1,2 @@
 [workspace]
-members = ["circuits", "test_noir"]
+members = ["circuits", "circuits_poseidon2", "test_noir"]

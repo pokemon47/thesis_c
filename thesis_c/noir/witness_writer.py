@@ -12,6 +12,8 @@ def _to_toml(value: Any) -> str:
     if isinstance(value, bool):
         return "true" if value else "false"
     if isinstance(value, int):
+        if value > 9223372036854775807 or value < -9223372036854775808:
+            return f'"{value}"'
         return str(value)
     if isinstance(value, str):
         return f'"{_toml_escape(value)}"'

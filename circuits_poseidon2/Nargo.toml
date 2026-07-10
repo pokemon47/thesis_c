@@ -1,0 +1,8 @@
+[package]
+name = "thesis_c_circuits_poseidon2"
+type = "bin"
+authors = ["Thesis C"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+poseidon = { path = "../../noir-poseidon" }

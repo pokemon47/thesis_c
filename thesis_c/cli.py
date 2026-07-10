@@ -332,7 +332,7 @@ def build_parser() -> argparse.ArgumentParser:
     generate_witness.add_argument(
         "--hash",
         default="keccak256",
-        choices=("keccak256",),
+        choices=("keccak256", "poseidon2"),
         help="Hash variant for witness generation.",
     )
     generate_witness.add_argument(

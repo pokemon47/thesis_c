@@ -66,7 +66,8 @@ class AccountInclusionStatement(ProofStatement):
         if len(address_bytes) != 20:
             raise ValueError("Account address must be 20 bytes.")
 
-        path_nibbles = bytes_to_nibbles(hash_variant.digest(address_bytes))
+        address_hash_bytes = hash_variant.digest(address_bytes)
+        path_nibbles = bytes_to_nibbles(address_hash_bytes)
         if len(path_nibbles) != ACCOUNT_PATH_NIBBLES:
             raise ValueError(
                 f"Expected account path of {ACCOUNT_PATH_NIBBLES} nibbles, got {len(path_nibbles)}"
@@ -162,6 +163,7 @@ class AccountInclusionStatement(ProofStatement):
                 "branch_child_indices": branch_child_indices,
                 "branch_child_hashes": branch_child_hashes_hex,
                 "branch_children": branch_children_hex,
+                "address_hash": "0x" + address_hash_bytes.hex(),
                 "path_nibbles": path_nibbles,
                 "leaf_path_nibbles": leaf_path_nibbles,
                 "leaf_path_len": len(leaf_path_nibbles),

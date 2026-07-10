@@ -111,7 +111,7 @@ def to_noir_input_map(statement: PreparedStatement) -> dict[str, Any]:
         while len(branch_children) < MAX_ACCOUNT_PROOF_NODES - 1:
             branch_children.append([[0] * 32 for _ in range(BRANCH_CHILD_SLOTS)])
 
-        return {
+        values = {
             "public_state_root": state_root,
             "public_account_address": account_address,
             "public_hash_variant_id": _to_field(statement.public_inputs["hash_variant_id"]),
@@ -155,6 +155,38 @@ def to_noir_input_map(statement: PreparedStatement) -> dict[str, Any]:
             "private_storage_root": private_storage_root,
             "private_code_hash": private_code_hash,
         }
+
+        if hash_name == "poseidon2":
+            branch_child_hash_fields = [
+                _to_field(item) for item in list(statement.private_inputs["branch_child_hashes"])
+            ]
+            while len(branch_child_hash_fields) < MAX_ACCOUNT_PROOF_NODES - 1:
+                branch_child_hash_fields.append(0)
+
+            branch_children_fields: list[list[int]] = []
+            for branch in list(statement.private_inputs["branch_children"]):
+                slots = [_to_field(slot) for slot in list(branch)]
+                if len(slots) > BRANCH_CHILD_SLOTS:
+                    raise ValueError(
+                        f"Branch child slot count {len(slots)} exceeds {BRANCH_CHILD_SLOTS}"
+                    )
+                while len(slots) < BRANCH_CHILD_SLOTS:
+                    slots.append(0)
+                branch_children_fields.append(slots)
+            while len(branch_children_fields) < MAX_ACCOUNT_PROOF_NODES - 1:
+                branch_children_fields.append([0] * BRANCH_CHILD_SLOTS)
+
+            values["public_state_root_field"] = _to_field(
+                statement.public_inputs["state_root"]
+            )
+            values["private_branch_child_hash_fields"] = branch_child_hash_fields
+            values["private_branch_children_fields"] = branch_children_fields
+            values["private_address_hash"] = pad_u8_list(
+                hex_to_u8_list(str(statement.private_inputs["address_hash"])),
+                32,
+            )
+
+        return values
 
     public_commitment = _commit(statement.public_inputs)
     private_commitment = _commit(statement.private_inputs)
