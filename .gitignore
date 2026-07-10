@@ -10,6 +10,7 @@ venv/
 
 # Noir / Nargo / Barretenberg outputs
 target/
+artifacts/
 proof
 vk
 public_inputs

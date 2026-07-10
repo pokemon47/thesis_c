@@ -4,6 +4,9 @@ import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
+from shutil import copy2
+
+from thesis_c.noir.artifacts import CircuitPackage
 
 
 @dataclass(slots=True)
@@ -12,14 +15,6 @@ class CommandResult:
     elapsed_s: float
     stdout: str
     stderr: str
-
-
-@dataclass(slots=True)
-class NoirExecutionArtifacts:
-    circuit_json: Path
-    witness_gz: Path
-    compile_result: CommandResult
-    execute_result: CommandResult
 
 
 def _run(command: list[str], cwd: Path) -> CommandResult:
@@ -40,35 +35,49 @@ def _run(command: list[str], cwd: Path) -> CommandResult:
     )
 
 
-def _latest_file(paths: list[Path]) -> Path:
-    if not paths:
-        raise FileNotFoundError("Expected generated Noir artifact, none found.")
-    return max(paths, key=lambda p: p.stat().st_mtime)
+def _repo_root_for(program_dir: Path) -> Path:
+    return program_dir.parent if program_dir.name in {"circuits", "circuits_poseidon2"} else Path.cwd()
 
 
-def compile_and_execute(
-    circuits_dir: str | Path,
-    execute_name: str = "witness",
-) -> NoirExecutionArtifacts:
-    program_dir = Path(circuits_dir)
+def compile_isolated(
+    circuit_package: CircuitPackage,
+    *,
+    run_dir: Path,
+) -> CommandResult:
+    program_dir = circuit_package.package_dir
+    repo_root = _repo_root_for(program_dir)
+
     compile_result = _run(
         ["nargo", "compile", "--program-dir", str(program_dir)],
-        cwd=program_dir,
+        cwd=repo_root,
     )
+    if not circuit_package.expected_circuit_json.exists():
+        raise FileNotFoundError(
+            f"Expected circuit JSON at {circuit_package.expected_circuit_json}"
+        )
+    run_circuit_json = run_dir / "circuit.json"
+    copy2(circuit_package.expected_circuit_json, run_circuit_json)
+
+    return compile_result
+
+
+def execute_witness_isolated(
+    circuit_package: CircuitPackage,
+    *,
+    witness_name: str,
+    run_dir: Path,
+) -> CommandResult:
+    program_dir = circuit_package.package_dir
+    repo_root = _repo_root_for(program_dir)
+
     execute_result = _run(
-        ["nargo", "execute", execute_name, "--program-dir", str(program_dir)],
-        cwd=program_dir,
+        ["nargo", "execute", witness_name, "--program-dir", str(program_dir)],
+        cwd=repo_root,
     )
+    expected_witness = repo_root / "target" / f"{witness_name}.gz"
+    if not expected_witness.exists():
+        raise FileNotFoundError(f"Expected witness artifact at {expected_witness}")
+    run_witness = run_dir / "witness.gz"
+    copy2(expected_witness, run_witness)
 
-    target_dir = program_dir / "target"
-    circuit_json = _latest_file(
-        [p for p in target_dir.glob("*.json") if not p.name.endswith(".debug.json")]
-    )
-    witness_gz = _latest_file(list(target_dir.glob("*.gz")))
-
-    return NoirExecutionArtifacts(
-        circuit_json=circuit_json,
-        witness_gz=witness_gz,
-        compile_result=compile_result,
-        execute_result=execute_result,
-    )
+    return execute_result

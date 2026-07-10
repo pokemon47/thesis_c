@@ -109,7 +109,7 @@ class AnalyzeResultsTests(unittest.TestCase):
                 backend="ultra_honk",
                 proof_generation_time_s=0.0,
                 status="proxy",
-                error="proxy_hash_cost_poseidon2_not_in_circuit",
+                error="proxy_poseidon2_statement_not_in_circuit",
             ),
         ]
 

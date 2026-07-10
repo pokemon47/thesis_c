@@ -28,8 +28,12 @@ def _to_toml(value: Any) -> str:
     return f'"{_toml_escape(str(value))}"'
 
 
+def render_prover_toml(values: dict[str, Any]) -> str:
+    lines = [f"{key} = {_to_toml(value)}" for key, value in values.items()]
+    return "\n".join(lines) + "\n"
+
+
 def write_prover_toml(path: str | Path, values: dict[str, Any]) -> None:
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
-    lines = [f"{key} = {_to_toml(value)}" for key, value in values.items()]
-    target.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    target.write_text(render_prover_toml(values), encoding="utf-8")
