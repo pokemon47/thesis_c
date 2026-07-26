@@ -38,6 +38,24 @@ from thesis_c.statements import STATEMENT_REGISTRY
 from thesis_c.statements.account_inclusion import ACCOUNT_INCLUSION_VERIFICATION_METADATA
 from thesis_c.baseline.verifier_adapter import verify_account_payload
 
+PRIMARY_PROVING_SYSTEM = "ultra_honk"
+DEFAULT_BB_BINARY = "/Users/doodleaks/.bb/bb"
+REAL_PROOF_STATEMENTS = {
+    "account_inclusion",
+    "account_inclusion_anchored",
+    "account_inclusion_anchored_poseidon2",
+    "balance_verification",
+    "balance_verification_anchored",
+    "balance_verification_anchored_poseidon2",
+    "codehash_verification",
+    "codehash_verification_anchored",
+    "codehash_verification_anchored_poseidon2",
+    "eoa_activity",
+    "eoa_activity_anchored",
+    "eoa_activity_anchored_poseidon2",
+    "storage_slot_membership",
+}
+
 
 @dataclass(slots=True)
 class BenchmarkConfig:
@@ -49,9 +67,10 @@ class BenchmarkConfig:
     statements: list[str]
     input_path_keccak: Path | None = None
     input_path_poseidon2: Path | None = None
-    bb_binary: str = "bb"
+    bb_binary: str = DEFAULT_BB_BINARY
     bb_oracle_hash: str = "keccak"
     artifact_root: Path = Path("artifacts")
+    proving_system: str = PRIMARY_PROVING_SYSTEM
 
 
 def _dataset_id(payloads: list[ProofPayload]) -> str:
@@ -81,6 +100,13 @@ def _resolve_hash_input_path(config: BenchmarkConfig, hash_name: str) -> Path | 
         if explicit is not None and explicit.exists():
             return explicit
 
+        # A storage-only invocation may use --input as its Poseidon2 source.
+        # Keep the historical default dataset behavior for other statements.
+        if config.statements and all(
+            statement == "storage_slot_membership" for statement in config.statements
+        ):
+            return config.input_path if config.input_path.exists() else None
+
         default_poseidon = Path("datasets/poseidon2")
         if _has_json_files(default_poseidon):
             return default_poseidon
@@ -94,6 +120,23 @@ def _build_backend(name: str, bb_binary: str, oracle_hash: str):
     if backend_cls is None:
         raise ValueError(f"Unsupported backend: {name}")
     return backend_cls(binary=bb_binary, oracle_hash=oracle_hash)
+
+
+def _validate_primary_benchmark_config(config: BenchmarkConfig) -> None:
+    if config.proving_system != PRIMARY_PROVING_SYSTEM:
+        raise ValueError(
+            "Unsupported proving system for benchmark runner: "
+            f"{config.proving_system!r}. Only {PRIMARY_PROVING_SYSTEM!r} is supported."
+        )
+    unsupported_backends = [
+        backend for backend in config.backends if backend != PRIMARY_PROVING_SYSTEM
+    ]
+    if unsupported_backends:
+        raise ValueError(
+            "Unsupported backend(s) for benchmark runner: "
+            f"{', '.join(sorted(set(unsupported_backends)))}. "
+            f"Only {PRIMARY_PROVING_SYSTEM!r} is supported."
+        )
 
 
 def _command_version(command: list[str]) -> str | None:
@@ -224,6 +267,7 @@ def _write_run_metadata(
         "package_dir": relative_or_str(circuit_package.package_dir, repo_root),
         "poseidon2_command_template": poseidon2_command_template,
         "python_version": sys.version.split()[0],
+        "proving_system": backend.name,
         "run_id": run_identity.run_id,
         "run_id_content_hash": run_identity.content_hash,
         "run_id_content_hash_inputs": run_identity.content_hash_inputs,
@@ -353,6 +397,7 @@ def _error_record(
         **_verification_metadata(statement),
         status="error",
         error=error,
+        proving_system=PRIMARY_PROVING_SYSTEM,
     )
 
 
@@ -389,10 +434,12 @@ def _template_row(
         **_verification_metadata(statement),
         status=status,
         error=error,
+        proving_system=PRIMARY_PROVING_SYSTEM,
     )
 
 
 def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
+    _validate_primary_benchmark_config(config)
     reference_payloads = load_proof_path(config.input_path)
     if not reference_payloads:
         raise ValueError("No proofs found in reference input path.")
@@ -439,7 +486,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
             for statement_name in (
                 statement
                 for statement in config.statements
-                if statement != "account_inclusion"
+                if statement not in REAL_PROOF_STATEMENTS
             ):
                 for backend_name in config.backends:
                     for payload in payloads:
@@ -454,7 +501,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                                 error="proxy_poseidon2_statement_not_in_circuit",
                             )
                         )
-            if "account_inclusion" not in config.statements:
+            if not any(statement in REAL_PROOF_STATEMENTS for statement in config.statements):
                 continue
 
         try:
@@ -487,6 +534,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                         **_verification_metadata("n/a"),
                         status="error",
                         error=f"Failed to initialize hash variant '{hash_name}': {exc}",
+                        proving_system=PRIMARY_PROVING_SYSTEM,
                     )
                 )
             continue
@@ -495,7 +543,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
             baselines = [verify_account_payload(payload, hash_variant) for payload in payloads]
         except Exception as exc:
             for statement_name in config.statements:
-                if hash_name == "poseidon2" and statement_name != "account_inclusion":
+                if hash_name == "poseidon2" and statement_name not in REAL_PROOF_STATEMENTS:
                     continue
                 for backend_name in config.backends:
                     for payload in payloads:
@@ -513,7 +561,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
             continue
 
         for statement_name in config.statements:
-            if statement_name != "account_inclusion":
+            if statement_name not in REAL_PROOF_STATEMENTS:
                 if hash_name == "poseidon2":
                     continue
                 for payload, baseline in zip(payloads, baselines, strict=True):
@@ -568,6 +616,8 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                     circuit_package = None
                     backend = None
                     package_prover_toml: Path | None = None
+                    package_prover_original: bytes | None = None
+                    package_prover_existed = False
                     run_prover_toml: Path | None = None
                     source_circuit_json: Path | None = None
                     source_witness_gz: Path | None = None
@@ -580,6 +630,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                         circuit_package = resolve_circuit_package(
                             statement_name,
                             hash_name,
+                            repo_root=Path.cwd(),
                         )
                         backend = _build_backend(
                             backend_name,
@@ -587,6 +638,9 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                             oracle_hash=config.bb_oracle_hash,
                         )
                         package_prover_toml = circuit_package.package_dir / "Prover.toml"
+                        package_prover_existed = package_prover_toml.exists()
+                        if package_prover_existed:
+                            package_prover_original = package_prover_toml.read_bytes()
                         prover_toml_text = render_prover_toml(noir_inputs)
                         prover_sha = sha256_bytes(prover_toml_text.encode("utf-8"))
                         source_proof_sha = _source_proof_sha256(payload)
@@ -730,6 +784,7 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                                 **_verification_metadata(statement_name),
                                 status="ok",
                                 error=None,
+                                proving_system=backend_name,
                             )
                         )
                     except Exception as exc:
@@ -801,4 +856,10 @@ def run_benchmarks(config: BenchmarkConfig) -> list[BenchmarkRecord]:
                                 error=error_message,
                             )
                         )
+                    finally:
+                        if package_prover_toml is not None:
+                            if package_prover_existed:
+                                package_prover_toml.write_bytes(package_prover_original or b"")
+                            elif package_prover_toml.exists():
+                                package_prover_toml.unlink()
     return output_rows

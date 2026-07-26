@@ -1,0 +1,87 @@
+{
+  "schema_version": "variable_depth_account_fixture_v1",
+  "fixture_classification": "synthetic controlled Besu state; development-only variable-depth fixture",
+  "hash_variant": "keccak256",
+  "account_proof_depth": 3,
+  "storage_proof_depth": 1,
+  "request": {
+    "method": "eth_getProof",
+    "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "storage_keys": [
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "block": "0x6"
+  },
+  "metadata": {
+    "contract_address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "raw_slot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "expected_value": "0x000000000000000000000000000000000000000000000000000000000000002a",
+    "block_number": 6,
+    "block_hash": "0x6c670e26e50846ec5860ef835d3e8a2f8ede282a1bb182e9ce7fadeeddae4f38",
+    "state_root": "0xfb5a71fb26f246cf98b981f305eaebc531635c2ca6a8fb0d5a02be0806a8d6b0",
+    "client_version": "besu/v26.7-develop-b83503e/osx_aarch_64/openjdk-java-21",
+    "besu_commit": "b83503e",
+    "genesis_sha256": "a05c5d5c73b61bee2da277ec94d2373235b2445706e7c00eefabeae0bc28a66e",
+    "source_rpc_response_sha256": "44c1206681a3e83e4d762fd814532ad7b514ce06e12da36d5ec468ae9984df77",
+    "source_rpc_response_path": "/private/tmp/variable-keccak-proof.json",
+    "data_path": "/private/tmp/besu_storage_fixture_keccak_archive_live",
+    "rpc_port": 18545,
+    "engine_port": 18551,
+    "startup_command": "JAVA_OPTS=\"\" ./build/install/besu/bin/besu --genesis-file=/private/tmp/storage-fixture-genesis.json --sync-mode=FULL --data-storage-format=X_BONSAI_ARCHIVE_PROOFS --data-path=/private/tmp/besu_storage_fixture_keccak_archive_live --Xbonsai-archive-trie-node-checkpoint-interval=1 --rpc-http-enabled=true --rpc-http-host=127.0.0.1 --rpc-http-port=18545 --rpc-http-api=ETH,NET,WEB3 --rpc-http-max-batch-size=2000 --p2p-enabled=false --engine-rpc-port=18551",
+    "validation": {
+      "account_proof": true,
+      "storage_proof": true,
+      "storage_root_linkage": true,
+      "nonzero_value": true
+    }
+  },
+  "rpc_response": {
+    "jsonrpc": "2.0",
+    "id": 2,
+    "result": {
+      "accountProof": [
+        "0xf90211a0193b5557a495314a77255d02eca3406f2d1d615a7931a46652aaca01329ae6b5a06ac352f051e12e22b19710ffb188957de56100734494398194004d83940267e1a034e4409bd6585fa4a37d959a1be94aaf72990e9c5eca7c1db637e370263063a8a0a7c07f7f0ee182be58f2aba5d7565ddb8d4189550954fa577a9347985f4fa331a0c360997cbaaac832a9585c3d890c1ce8136599ebaa3bfe3d4a1529f10f88e461a02d8d0228e4081d3bab1cab1d8c07d0b09ea063b7ec1469a6500a40cb06f037c5a0bfba0442557e7d281da5e9400f0470f8688f59b1f32dd565e0f6a1bfbdd6eaaba0305a90ea328066deff4532b540499d0dc3c09e3cf3bf4ca4377de241980d5f0ca05e4f9d02efbbb2dbe9f2f15dc11eb40e9f680246b16843e7a17d3eb18aa424aea03a0518e87dfe50013ef224770d37b8b3a9285de3cfca64d8d51334d0e89fe0b1a0015479d1a133dfb4e5e1bb7d0a642076e381353412c62b3012750d8eab98dff2a06ea90eb6c99c85e09b82093720361fa5b40548b3aaeecc33bd425a8c0328535fa0d145c51528381331055854aa8421c4b1963fcf2e1942eec9d1dae3fe53f54ce0a08d29896e1d203cc3e01f8e2b116d6433c89b4f9e8bedf248d5ed70f47e6d4a51a043735cc0a2393c6b20ca87e570aceee77dfafbc56ced01c3d96ce3c5cfc6b879a0d86feb17e5feeab00da6d48b3a54de710ea199985dfa9dbfd9ff0c81889e6cec80",
+        "0xf90111a040c0192cd1ccdee1c250fa5ea38091f767d631a45ecccf40c80cd4f115387c17a07a4f5ca70751ed6bf4ab9c0f32546c9ec52335f37baac6a659d4ed2c56b9062e80a0368becc66e4da7b3be5923e2fb3155d2a1af4f33b1b748bc5331f36d8a9a79998080a04440b24377200707599f20beaadd814c9908ae6e0a4504c9dde741bc8c4627f480a0e3c3d2784d19f449c3e5aad2a297607215996d3438a2dc249d817dcefcbde40780a0bde4c535e185c88f94b8487e53c2752c6d78f27ecadd80566a9ed383564b1ae2a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f84a08d98a70b405fdb7326e3c48391a21cc144199ee70cb8754297bb49593aedb0be80808080",
+        "0xf869a0204400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b846f8440180a081d1fa699f807735499cf6f7df860797cf66f6a66b565cfcda3fae3521eb6861a020df80875129303899a2c5043ce0deb33138c09515cd866bb84f43919a921694"
+      ],
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "balance": "0x0",
+      "codeHash": "0x20df80875129303899a2c5043ce0deb33138c09515cd866bb84f43919a921694",
+      "nonce": "0x1",
+      "storageHash": "0x81d1fa699f807735499cf6f7df860797cf66f6a66b565cfcda3fae3521eb6861",
+      "storageProof": [
+        {
+          "key": "0x0",
+          "value": "0x2a",
+          "proof": [
+            "0xe3a120290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e5632a"
+          ]
+        }
+      ]
+    }
+  },
+  "result": {
+    "accountProof": [
+      "0xf90211a0193b5557a495314a77255d02eca3406f2d1d615a7931a46652aaca01329ae6b5a06ac352f051e12e22b19710ffb188957de56100734494398194004d83940267e1a034e4409bd6585fa4a37d959a1be94aaf72990e9c5eca7c1db637e370263063a8a0a7c07f7f0ee182be58f2aba5d7565ddb8d4189550954fa577a9347985f4fa331a0c360997cbaaac832a9585c3d890c1ce8136599ebaa3bfe3d4a1529f10f88e461a02d8d0228e4081d3bab1cab1d8c07d0b09ea063b7ec1469a6500a40cb06f037c5a0bfba0442557e7d281da5e9400f0470f8688f59b1f32dd565e0f6a1bfbdd6eaaba0305a90ea328066deff4532b540499d0dc3c09e3cf3bf4ca4377de241980d5f0ca05e4f9d02efbbb2dbe9f2f15dc11eb40e9f680246b16843e7a17d3eb18aa424aea03a0518e87dfe50013ef224770d37b8b3a9285de3cfca64d8d51334d0e89fe0b1a0015479d1a133dfb4e5e1bb7d0a642076e381353412c62b3012750d8eab98dff2a06ea90eb6c99c85e09b82093720361fa5b40548b3aaeecc33bd425a8c0328535fa0d145c51528381331055854aa8421c4b1963fcf2e1942eec9d1dae3fe53f54ce0a08d29896e1d203cc3e01f8e2b116d6433c89b4f9e8bedf248d5ed70f47e6d4a51a043735cc0a2393c6b20ca87e570aceee77dfafbc56ced01c3d96ce3c5cfc6b879a0d86feb17e5feeab00da6d48b3a54de710ea199985dfa9dbfd9ff0c81889e6cec80",
+      "0xf90111a040c0192cd1ccdee1c250fa5ea38091f767d631a45ecccf40c80cd4f115387c17a07a4f5ca70751ed6bf4ab9c0f32546c9ec52335f37baac6a659d4ed2c56b9062e80a0368becc66e4da7b3be5923e2fb3155d2a1af4f33b1b748bc5331f36d8a9a79998080a04440b24377200707599f20beaadd814c9908ae6e0a4504c9dde741bc8c4627f480a0e3c3d2784d19f449c3e5aad2a297607215996d3438a2dc249d817dcefcbde40780a0bde4c535e185c88f94b8487e53c2752c6d78f27ecadd80566a9ed383564b1ae2a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f84a08d98a70b405fdb7326e3c48391a21cc144199ee70cb8754297bb49593aedb0be80808080",
+      "0xf869a0204400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b846f8440180a081d1fa699f807735499cf6f7df860797cf66f6a66b565cfcda3fae3521eb6861a020df80875129303899a2c5043ce0deb33138c09515cd866bb84f43919a921694"
+    ],
+    "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "balance": "0x0",
+    "codeHash": "0x20df80875129303899a2c5043ce0deb33138c09515cd866bb84f43919a921694",
+    "nonce": "0x1",
+    "storageHash": "0x81d1fa699f807735499cf6f7df860797cf66f6a66b565cfcda3fae3521eb6861",
+    "storageProof": [
+      {
+        "key": "0x0",
+        "value": "0x2a",
+        "proof": [
+          "0xe3a120290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e5632a"
+        ]
+      }
+    ],
+    "blockNumber": 6,
+    "stateRoot": "0xfb5a71fb26f246cf98b981f305eaebc531635c2ca6a8fb0d5a02be0806a8d6b0",
+    "blockHash": "0x6c670e26e50846ec5860ef835d3e8a2f8ede282a1bb182e9ce7fadeeddae4f38"
+  }
+}

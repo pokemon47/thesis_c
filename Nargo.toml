@@ -1,2 +1,25 @@
 [workspace]
-members = ["circuits", "circuits_poseidon2", "test_noir"]
+members = [
+    "circuits",
+    "circuits_poseidon2",
+    "circuits_balance",
+    "circuits_balance_poseidon2",
+    "circuits_codehash",
+    "circuits_codehash_poseidon2",
+    "circuits_eoa_activity",
+    "circuits_eoa_activity_poseidon2",
+    "circuits_eoa_activity_anchored",
+    "circuits_eoa_activity_anchored_poseidon2",
+    "circuits_storage_slot_inclusion",
+    "circuits_storage_slot_inclusion_poseidon2",
+    "circuits_mpt_inclusion",
+    "circuits_mpt_inclusion_poseidon2",
+    "circuits_header_anchor",
+    "circuits_account_inclusion_anchored",
+    "circuits_account_inclusion_anchored_poseidon2",
+    "circuits_balance_anchored",
+    "circuits_balance_anchored_poseidon2",
+    "circuits_codehash_anchored",
+    "circuits_codehash_anchored_poseidon2",
+    "test_noir",
+]

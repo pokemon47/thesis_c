@@ -21,6 +21,8 @@ public_inputs
 # Benchmarks
 benchmarks/raw/*
 benchmarks/reports/*
+benchmarks/native/benchmark_env.local.sh
+benchmarks/native_runs/*
 !benchmarks/raw/.gitkeep
 !benchmarks/reports/.gitkeep
 
@@ -29,3 +31,4 @@ datasets/keccak/*
 datasets/poseidon2/*
 !datasets/keccak/.gitkeep
 !datasets/poseidon2/.gitkeep
+docs/*

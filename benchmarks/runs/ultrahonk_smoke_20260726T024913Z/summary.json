@@ -1,0 +1,58 @@
+{
+  "attempts": [
+    {
+      "backend": "ultra_honk",
+      "dataset_id": "proof_keccak_forest_0",
+      "error": null,
+      "hash_name": "keccak256",
+      "label": "account_inclusion_keccak_supplied_root",
+      "physical_result_id": "account_inclusion::keccak256::ultra_honk::proof_keccak_forest_0",
+      "run_dir": "/Users/doodleaks/Developer/Thesis/SNARK/thesis_c/benchmarks/runs/ultrahonk_smoke_20260726T024913Z/rows/account_inclusion_keccak_supplied_root",
+      "statement": "account_inclusion",
+      "status": "ok",
+      "verification_ok": true
+    },
+    {
+      "backend": "ultra_honk",
+      "dataset_id": "hoodi_block_9_account_proof_poseidon2_0",
+      "error": null,
+      "hash_name": "poseidon2",
+      "label": "account_inclusion_poseidon2_supplied_root",
+      "physical_result_id": "account_inclusion::poseidon2::ultra_honk::hoodi_block_9_account_proof_poseidon2_0",
+      "run_dir": "/Users/doodleaks/Developer/Thesis/SNARK/thesis_c/benchmarks/runs/ultrahonk_smoke_20260726T024913Z/rows/account_inclusion_poseidon2_supplied_root",
+      "statement": "account_inclusion",
+      "status": "ok",
+      "verification_ok": true
+    },
+    {
+      "backend": "ultra_honk",
+      "dataset_id": "hoodi_block_9_anchored_account_proof_0",
+      "error": null,
+      "hash_name": "keccak256",
+      "label": "account_inclusion_keccak_anchored",
+      "physical_result_id": "account_inclusion_anchored::keccak256::ultra_honk::hoodi_block_9_anchored_account_proof_0",
+      "run_dir": "/Users/doodleaks/Developer/Thesis/SNARK/thesis_c/benchmarks/runs/ultrahonk_smoke_20260726T024913Z/rows/account_inclusion_keccak_anchored",
+      "statement": "account_inclusion_anchored",
+      "status": "ok",
+      "verification_ok": true
+    },
+    {
+      "backend": "ultra_honk",
+      "dataset_id": "hoodi_block_9_anchored_account_proof_poseidon2_0",
+      "error": null,
+      "hash_name": "poseidon2",
+      "label": "balance_poseidon2_anchored",
+      "physical_result_id": "balance_verification_anchored_poseidon2::poseidon2::ultra_honk::hoodi_block_9_anchored_account_proof_poseidon2_0",
+      "run_dir": "/Users/doodleaks/Developer/Thesis/SNARK/thesis_c/benchmarks/runs/ultrahonk_smoke_20260726T024913Z/rows/balance_poseidon2_anchored",
+      "statement": "balance_verification_anchored_poseidon2",
+      "status": "ok",
+      "verification_ok": true
+    }
+  ],
+  "logical_specs_ok": 4,
+  "logical_specs_total": 4,
+  "rows_failed": 0,
+  "rows_ok": 4,
+  "rows_total": 4,
+  "run_id": "ultrahonk_smoke_20260726T024913Z"
+}

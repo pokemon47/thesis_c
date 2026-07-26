@@ -1,0 +1,247 @@
+[
+  {
+    "schema_version": "eoa_activity_controlled_besu_v1",
+    "fixture_classification": "real controlled Besu paired fixture; development-only variable-depth EOA activity",
+    "fixture_status": "retained development-only fixture; not a public chain dataset",
+    "hash_variant": "keccak",
+    "account_proof_depth": 3,
+    "synthetic_fixture": false,
+    "controlled_besu_state": true,
+    "real_chain_dataset": false,
+    "blockNumber": 0,
+    "result": {
+      "accountProof": [
+        "0xf9019180a0cbb2907aabb48029c6c13d0c1947887ab4f7978dc12cda6af4368466a25450b680a0c1f078b3cda20588114913955a41e31658025570371d0356391b9c0d8a2050eca0de26cb1b4fd99c4d3ed75d4a67931e3c252605c7d68e0148d5327f341bfd5283a055c540149ead455e51f839028dd16676597381d407b17f1d4ac6b68923a4d5dea0c2c799b60a0cd6acd42c1015512872e86c186bcf196e85061e76842f3b7cf86080a02e0d86c3befd177f574a20ac63804532889077e955320c9361cd10b7cc6f5809a0905773350781af03041c03dbf3076605931a9dbdea54c49661a16c18e0dffc9ba0c1aeccf7399f2abbabd3d7f5d5a91c746f7954d3d107e91f6d88c1204f9c489b80a0dd0f6daa595756c431b263ac1ec93ee16af07f001f3a06157136a70a9b65d47ca0a5ac64bb99d260ef6b13a4f2040ed48a4936664ec13d400238b5004841a4d888a0a9e6cc0d5192cb036c2454c7cf19ff53abf1861b50043a7b3713bc003a5a7d88a0144540d36e30b250d25bd5c34d819538742dc54c2017c4eb1fabb8e45f72759180",
+        "0xf87180a07a4f5ca70751ed6bf4ab9c0f32546c9ec52335f37baac6a659d4ed2c56b9062e80a0189d28f5716f0508b7fe5718657198a8cd07ad7be7276fc3eda52c0b6a98596780808080808080a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f848080808080",
+        "0xf872a0204400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b84ff84d01893635c9adc5dea00000a056e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+      ],
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "balance": "0x3635c9adc5dea00000",
+      "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "nonce": "0x1",
+      "storageHash": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "storageProof": [],
+      "stateRoot": "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba",
+      "blockNumber": "0x0"
+    },
+    "block_context": {
+      "number": "0x0",
+      "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "transactions": [],
+      "hash": "0xb0ac052d7e7749c10393255c84edf26d0f7f26817630c0743d80b2fc47865475",
+      "stateRoot": "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba"
+    },
+    "metadata": {
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "nonce": "0x1",
+      "code_hash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "empty_code_hash": true,
+      "state_root": "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba",
+      "block_hash": "0xb0ac052d7e7749c10393255c84edf26d0f7f26817630c0743d80b2fc47865475",
+      "proof_node_lengths": [
+        404,
+        115,
+        116
+      ],
+      "genesis_path": "/private/tmp/eoa-k-final.json",
+      "genesis_sha256": "dc62aee4fc8467cbc0e4c74262006c158e1e117f6dc98f7ea5e04ae09edad6e0",
+      "source_rpc_response_sha256": "73727123d3457d809bfdc210fb6731421fc5d3c939a73145ab98f52783fbf220",
+      "source_rpc_response_path": "/private/tmp/eoa-k-final-proof2.json",
+      "besu_version": "besu/v26.7-develop-b83503e/osx_aarch_64/openjdk-java-21",
+      "besu_commit": "b83503e",
+      "poseidon2_parameter_set": null,
+      "startup_command": "JAVA_OPTS=\"\" ./build/install/besu/bin/besu --genesis-file=/private/tmp/eoa-k-final.json --sync-mode=FULL --data-storage-format=X_BONSAI_ARCHIVE_PROOFS --data-path=/private/tmp/eoa_keccak_0x1 --Xbonsai-archive-trie-node-checkpoint-interval=1 --rpc-http-enabled=true --rpc-http-host=127.0.0.1 --rpc-http-port=18746 --rpc-http-api=ETH,NET,WEB3 --rpc-http-max-batch-size=2000 --p2p-enabled=false --engine-rpc-port=18752",
+      "rpc_requests": [
+        {
+          "method": "web3_clientVersion",
+          "params": []
+        },
+        {
+          "method": "eth_getProof",
+          "params": [
+            "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+            [],
+            "0x0"
+          ]
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x0",
+            false
+          ]
+        }
+      ],
+      "validation": {
+        "account_proof": true,
+        "same_address": true,
+        "empty_code_hash": true,
+        "proof_shape": "branch^(2) -> terminal leaf"
+      }
+    },
+    "source_rpc_response": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "accountProof": [
+          "0xf9019180a0cbb2907aabb48029c6c13d0c1947887ab4f7978dc12cda6af4368466a25450b680a0c1f078b3cda20588114913955a41e31658025570371d0356391b9c0d8a2050eca0de26cb1b4fd99c4d3ed75d4a67931e3c252605c7d68e0148d5327f341bfd5283a055c540149ead455e51f839028dd16676597381d407b17f1d4ac6b68923a4d5dea0c2c799b60a0cd6acd42c1015512872e86c186bcf196e85061e76842f3b7cf86080a02e0d86c3befd177f574a20ac63804532889077e955320c9361cd10b7cc6f5809a0905773350781af03041c03dbf3076605931a9dbdea54c49661a16c18e0dffc9ba0c1aeccf7399f2abbabd3d7f5d5a91c746f7954d3d107e91f6d88c1204f9c489b80a0dd0f6daa595756c431b263ac1ec93ee16af07f001f3a06157136a70a9b65d47ca0a5ac64bb99d260ef6b13a4f2040ed48a4936664ec13d400238b5004841a4d888a0a9e6cc0d5192cb036c2454c7cf19ff53abf1861b50043a7b3713bc003a5a7d88a0144540d36e30b250d25bd5c34d819538742dc54c2017c4eb1fabb8e45f72759180",
+          "0xf87180a07a4f5ca70751ed6bf4ab9c0f32546c9ec52335f37baac6a659d4ed2c56b9062e80a0189d28f5716f0508b7fe5718657198a8cd07ad7be7276fc3eda52c0b6a98596780808080808080a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f848080808080",
+          "0xf872a0204400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b84ff84d01893635c9adc5dea00000a056e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        ],
+        "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+        "balance": "0x3635c9adc5dea00000",
+        "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+        "nonce": "0x1",
+        "storageHash": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+        "storageProof": [],
+        "stateRoot": "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba",
+        "blockNumber": "0x0"
+      }
+    },
+    "pair_metadata": {
+      "same_address": true,
+      "distinct_state_roots": true,
+      "different_nonce_encodings": true,
+      "both_empty_code_hash": true,
+      "depths": [
+        3,
+        4
+      ],
+      "nonces": [
+        "0x1",
+        "0x2"
+      ],
+      "state_roots": [
+        "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba",
+        "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52"
+      ]
+    }
+  },
+  {
+    "schema_version": "eoa_activity_controlled_besu_v1",
+    "fixture_classification": "real controlled Besu paired fixture; development-only variable-depth EOA activity",
+    "fixture_status": "retained development-only fixture; not a public chain dataset",
+    "hash_variant": "keccak",
+    "account_proof_depth": 4,
+    "synthetic_fixture": false,
+    "controlled_besu_state": true,
+    "real_chain_dataset": false,
+    "blockNumber": 0,
+    "result": {
+      "accountProof": [
+        "0xf85180a0ab8cdb808c8303bb61fb48e276217be9770fa83ecf3f90f2234d558885f5abf1808080a0ada8af74651e5c9e0a03e12f2ba3470e9046b1b2ce4cbd633b1c23c1c44bf4858080808080808080808080",
+        "0xf851808080a078be182e6960d3895075d34727b04a7f4cb5c82dca315899c731317f2e458f1980808080808080a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f848080808080",
+        "0xf85180808080a07b0682411c975b8a3faa9ce6144e41e8fb2c245195c4717956de7c1a01f14373a048be19b93ba3254278a1427706b0beae2275d00becc53f0d04a0c2216217c0f08080808080808080808080",
+        "0xf8719f3400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b84ff84d02893635c9adc5dea00000a056e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+      ],
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "balance": "0x3635c9adc5dea00000",
+      "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "nonce": "0x2",
+      "storageHash": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "storageProof": [],
+      "stateRoot": "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52",
+      "blockNumber": "0x0"
+    },
+    "block_context": {
+      "number": "0x0",
+      "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "transactions": [],
+      "hash": "0x3b036ea96789f09633069f5e40ce75c050ea476194638a49a2efced0b8883eee",
+      "stateRoot": "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52"
+    },
+    "metadata": {
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "nonce": "0x2",
+      "code_hash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+      "empty_code_hash": true,
+      "state_root": "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52",
+      "block_hash": "0x3b036ea96789f09633069f5e40ce75c050ea476194638a49a2efced0b8883eee",
+      "proof_node_lengths": [
+        83,
+        83,
+        83,
+        115
+      ],
+      "genesis_path": "/private/tmp/eoa-k-depth4-branchchain.json",
+      "genesis_sha256": "5e8f44c9753b9ac023cfea289a8eefbd847fbd8c7f1a00b22a0d8c2ed9a3f6c9",
+      "source_rpc_response_sha256": "2e02a8647cab0121ddff625dbe900bd7b4f965e9a145cfd844a1239ceaa0b779",
+      "source_rpc_response_path": "/private/tmp/eoa-k-depth4-branchchain-proof.json",
+      "besu_version": "besu/v26.7-develop-b83503e/osx_aarch_64/openjdk-java-21",
+      "besu_commit": "b83503e",
+      "poseidon2_parameter_set": null,
+      "startup_command": "JAVA_OPTS=\"\" ./build/install/besu/bin/besu --genesis-file=/private/tmp/eoa-k-depth4-branchchain.json --sync-mode=FULL --data-storage-format=X_BONSAI_ARCHIVE_PROOFS --data-path=/private/tmp/eoa_keccak_0x2 --Xbonsai-archive-trie-node-checkpoint-interval=1 --rpc-http-enabled=true --rpc-http-host=127.0.0.1 --rpc-http-port=18746 --rpc-http-api=ETH,NET,WEB3 --rpc-http-max-batch-size=2000 --p2p-enabled=false --engine-rpc-port=18752",
+      "rpc_requests": [
+        {
+          "method": "web3_clientVersion",
+          "params": []
+        },
+        {
+          "method": "eth_getProof",
+          "params": [
+            "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+            [],
+            "0x0"
+          ]
+        },
+        {
+          "method": "eth_getBlockByNumber",
+          "params": [
+            "0x0",
+            false
+          ]
+        }
+      ],
+      "validation": {
+        "account_proof": true,
+        "same_address": true,
+        "empty_code_hash": true,
+        "proof_shape": "branch^(3) -> terminal leaf"
+      }
+    },
+    "source_rpc_response": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "accountProof": [
+          "0xf85180a0ab8cdb808c8303bb61fb48e276217be9770fa83ecf3f90f2234d558885f5abf1808080a0ada8af74651e5c9e0a03e12f2ba3470e9046b1b2ce4cbd633b1c23c1c44bf4858080808080808080808080",
+          "0xf851808080a078be182e6960d3895075d34727b04a7f4cb5c82dca315899c731317f2e458f1980808080808080a0e61e567237b49c44d8f906ceea49027260b4010c10a547b38d8b131b9d3b6f848080808080",
+          "0xf85180808080a07b0682411c975b8a3faa9ce6144e41e8fb2c245195c4717956de7c1a01f14373a048be19b93ba3254278a1427706b0beae2275d00becc53f0d04a0c2216217c0f08080808080808080808080",
+          "0xf8719f3400378e7ef497782155838591e6028759ec73d32c31b61695d31ceabdc033b84ff84d02893635c9adc5dea00000a056e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421a0c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
+        ],
+        "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+        "balance": "0x3635c9adc5dea00000",
+        "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+        "nonce": "0x2",
+        "storageHash": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+        "storageProof": [],
+        "stateRoot": "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52",
+        "blockNumber": "0x0"
+      }
+    },
+    "pair_metadata": {
+      "same_address": true,
+      "distinct_state_roots": true,
+      "different_nonce_encodings": true,
+      "both_empty_code_hash": true,
+      "depths": [
+        3,
+        4
+      ],
+      "nonces": [
+        "0x1",
+        "0x2"
+      ],
+      "state_roots": [
+        "0x2e8c6a47ffb840fea942cb7898d7cdcdf9bcf2dcf43072d4e7b6b9c2762cd5ba",
+        "0xd25a34f26f4ffff546dcecdf6035d51ee5fe05f71b7a824cf5c3857c6a324e52"
+      ]
+    }
+  }
+]

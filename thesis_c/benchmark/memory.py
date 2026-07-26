@@ -26,18 +26,18 @@ def _process_tree_rss(pid: int) -> int:
         return 0
     try:
         root = psutil.Process(pid)
-    except psutil.Error:
+    except Exception:
         return 0
     processes = [root]
     try:
         processes.extend(root.children(recursive=True))
-    except psutil.Error:
+    except Exception:
         pass
     rss = 0
     for proc in processes:
         try:
             rss += proc.memory_info().rss
-        except psutil.Error:
+        except Exception:
             continue
     return rss
 

@@ -13,7 +13,7 @@ from thesis_c.baseline.verifier_adapter import (
 from thesis_c.hashes.keccak import Keccak256Hash
 from thesis_c.noir.inputs import to_noir_input_map
 from thesis_c.noir.witness_writer import write_prover_toml
-from thesis_c.statements.account_inclusion import AccountInclusionStatement
+from thesis_c.statements import STATEMENT_REGISTRY
 from thesis_c.datasets.discovery import discover_dataset
 from thesis_c.datasets.manifest import (
     build_dataset_manifest,
@@ -22,6 +22,9 @@ from thesis_c.datasets.manifest import (
 )
 from thesis_c.hashes.poseidon2 import Poseidon2Hash
 from thesis_c.proof_inputs.loaders import load_proof_path
+
+PRIMARY_PROVING_SYSTEM = "ultra_honk"
+DEFAULT_BB_BINARY = "/Users/doodleaks/.bb/bb"
 
 
 def _parse_list(raw: str) -> list[str]:
@@ -62,12 +65,24 @@ def generate_witness_command(args: argparse.Namespace) -> int:
             return 1
         baseline_results.append(result)
 
-    statement = AccountInclusionStatement()
+    statement_name = getattr(args, "statement", "account_inclusion")
+    statement_cls = STATEMENT_REGISTRY.get(statement_name)
+    if statement_cls is None:
+        print(f"Unsupported statement: {statement_name}")
+        return 2
+    statement = statement_cls()
+    if statement.required_payloads != len(payloads):
+        print(
+            f"Statement {statement_name} requires {statement.required_payloads} "
+            f"payload(s), but loaded {len(payloads)}."
+        )
+        return 2
     prepared = statement.prepare(payloads, baseline_results)
     noir_inputs = to_noir_input_map(prepared)
     write_prover_toml(output_path, noir_inputs)
 
     print(f"Selected hash variant ID: {noir_inputs['public_hash_variant_id']}")
+    print(f"Selected statement: {statement_name}")
     print(f"Output path: {output_path}")
     print("Witness generation succeeded")
     return 0
@@ -123,6 +138,23 @@ def benchmark_command(args: argparse.Namespace) -> int:
     from thesis_c.benchmark.json_writer import write_json
     from thesis_c.benchmark.runner import BenchmarkConfig, run_benchmarks
 
+    backends = _parse_list(args.backends)
+    proving_system = args.proving_system
+    if proving_system != PRIMARY_PROVING_SYSTEM:
+        print(
+            f"Unsupported proving system for benchmark runner: {proving_system!r}. "
+            f"Only {PRIMARY_PROVING_SYSTEM!r} is supported."
+        )
+        return 2
+    unsupported_backends = [backend for backend in backends if backend != PRIMARY_PROVING_SYSTEM]
+    if unsupported_backends:
+        print(
+            "Unsupported backend(s) for benchmark runner: "
+            f"{', '.join(sorted(set(unsupported_backends)))}. "
+            f"Only {PRIMARY_PROVING_SYSTEM!r} is supported."
+        )
+        return 2
+
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output_dir = Path(args.output_dir) if args.output_dir else Path("benchmarks/raw") / timestamp
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -132,14 +164,19 @@ def benchmark_command(args: argparse.Namespace) -> int:
         circuits_dir=Path(args.circuits_dir),
         output_dir=output_dir,
         hashes=_parse_list(args.hashes),
-        backends=_parse_list(args.backends),
+        backends=backends,
         statements=_parse_list(args.statements),
         input_path_keccak=Path(args.input_keccak) if args.input_keccak else None,
         input_path_poseidon2=Path(args.input_poseidon2) if args.input_poseidon2 else None,
         bb_binary=args.bb_binary,
         bb_oracle_hash=args.bb_oracle_hash,
+        proving_system=proving_system,
     )
-    rows = run_benchmarks(config)
+    try:
+        rows = run_benchmarks(config)
+    except ValueError as exc:
+        print(str(exc))
+        return 2
     csv_path = output_dir / "benchmark.csv"
     json_path = output_dir / "benchmark.json"
     write_csv(csv_path, rows)
@@ -340,6 +377,24 @@ def build_parser() -> argparse.ArgumentParser:
         default="circuits/Prover.toml",
         help="Output path for the generated Prover.toml.",
     )
+    generate_witness.add_argument(
+        "--statement",
+        default="account_inclusion",
+        choices=(
+            "account_inclusion",
+            "account_inclusion_anchored",
+            "account_inclusion_anchored_poseidon2",
+            "balance_verification_anchored",
+            "balance_verification_anchored_poseidon2",
+            "codehash_verification_anchored",
+            "codehash_verification_anchored_poseidon2",
+            "storage_slot_membership",
+        ),
+        help=(
+            "Statement to prepare. Defaults to account inclusion; storage slot "
+            "membership is preparation-only until its circuit is selected explicitly."
+        ),
+    )
     generate_witness.set_defaults(func=generate_witness_command)
 
     verify_storage = subparsers.add_parser(
@@ -463,8 +518,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     benchmark.add_argument(
         "--backends",
-        default="ultra_plonk,ultra_honk",
-        help="Comma-separated Barretenberg backend variants.",
+        default=PRIMARY_PROVING_SYSTEM,
+        help="Comma-separated Barretenberg backend variants. Only ultra_honk is supported.",
+    )
+    benchmark.add_argument(
+        "--proving-system",
+        default=PRIMARY_PROVING_SYSTEM,
+        help="Primary proving system for the benchmark matrix. Only ultra_honk is supported.",
     )
     benchmark.add_argument(
         "--statements",
@@ -473,7 +533,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     benchmark.add_argument(
         "--bb-binary",
-        default="bb",
+        default=DEFAULT_BB_BINARY,
         help="Barretenberg CLI binary name/path.",
     )
     benchmark.add_argument(

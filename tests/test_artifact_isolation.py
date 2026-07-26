@@ -43,9 +43,143 @@ class ArtifactIsolationTests(unittest.TestCase):
             Path("target") / "thesis_c_circuits_poseidon2.json",
         )
 
-    def test_unsupported_package_combination_fails(self) -> None:
-        with self.assertRaises(ValueError):
-            resolve_circuit_package("storage_slot_inclusion", "poseidon2")
+    def test_resolves_keccak_balance_package(self) -> None:
+        package = resolve_circuit_package(
+            "balance_verification",
+            "keccak256",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_balance"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_balance")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_balance.json",
+        )
+
+    def test_resolves_poseidon2_balance_package(self) -> None:
+        package = resolve_circuit_package(
+            "balance_verification",
+            "poseidon2",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_balance_poseidon2"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_balance_poseidon2")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_balance_poseidon2.json",
+        )
+
+    def test_resolves_keccak_codehash_package(self) -> None:
+        package = resolve_circuit_package(
+            "codehash_verification",
+            "keccak256",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_codehash"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_codehash")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_codehash.json",
+        )
+
+    def test_resolves_poseidon2_codehash_package(self) -> None:
+        package = resolve_circuit_package(
+            "codehash_verification",
+            "poseidon2",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_codehash_poseidon2"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_codehash_poseidon2")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_codehash_poseidon2.json",
+        )
+
+    def test_resolves_keccak_eoa_activity_package(self) -> None:
+        package = resolve_circuit_package(
+            "eoa_activity",
+            "keccak256",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_eoa_activity"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_eoa_activity")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_eoa_activity.json",
+        )
+
+    def test_resolves_poseidon2_eoa_activity_package(self) -> None:
+        package = resolve_circuit_package(
+            "eoa_activity",
+            "poseidon2",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_eoa_activity_poseidon2"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_eoa_activity_poseidon2")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_eoa_activity_poseidon2.json",
+        )
+
+    def test_resolves_keccak_anchored_eoa_activity_package(self) -> None:
+        package = resolve_circuit_package(
+            "eoa_activity_anchored",
+            "keccak256",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_eoa_activity_anchored"))
+        self.assertEqual(package.nargo_package_name, "thesis_c_circuits_eoa_activity_anchored")
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_eoa_activity_anchored.json",
+        )
+
+    def test_resolves_poseidon2_anchored_eoa_activity_package(self) -> None:
+        package = resolve_circuit_package(
+            "eoa_activity_anchored_poseidon2",
+            "poseidon2",
+            repo_root=Path("."),
+        )
+
+        self.assertEqual(package.package_dir, Path("circuits_eoa_activity_anchored_poseidon2"))
+        self.assertEqual(
+            package.nargo_package_name,
+            "thesis_c_circuits_eoa_activity_anchored_poseidon2",
+        )
+        self.assertEqual(
+            package.expected_circuit_json,
+            Path("target") / "thesis_c_circuits_eoa_activity_anchored_poseidon2.json",
+        )
+
+    def test_resolves_storage_slot_membership_packages(self) -> None:
+        for hash_name, package_dir, package_name in (
+            (
+                "keccak256",
+                "circuits_storage_slot_inclusion",
+                "thesis_c_circuits_storage_slot_inclusion",
+            ),
+            (
+                "poseidon2",
+                "circuits_storage_slot_inclusion_poseidon2",
+                "thesis_c_circuits_storage_slot_inclusion_poseidon2",
+            ),
+        ):
+            package = resolve_circuit_package(
+                "storage_slot_membership", hash_name, repo_root=Path(".")
+            )
+            self.assertEqual(package.package_dir, Path(package_dir))
+            self.assertEqual(package.nargo_package_name, package_name)
+            self.assertEqual(
+                package.expected_circuit_json,
+                Path("target") / f"{package_name}.json",
+            )
 
     def test_run_id_is_deterministic_and_changes_with_hash(self) -> None:
         kwargs = {

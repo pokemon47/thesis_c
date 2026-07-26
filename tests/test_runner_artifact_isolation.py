@@ -78,13 +78,68 @@ def _fixed_inputs() -> dict[str, object]:
     }
 
 
-def _fixed_run_identity(hash_name: str = "keccak256") -> RunIdentity:
-    package_name = (
-        "thesis_c_circuits_poseidon2"
-        if hash_name == "poseidon2"
-        else "thesis_c_circuits"
-    )
-    package_path = "circuits_poseidon2" if hash_name == "poseidon2" else "circuits"
+def _fixed_run_identity(hash_name: str = "keccak256", statement: str = "account_inclusion") -> RunIdentity:
+    if statement == "balance_verification":
+        package_name = (
+            "thesis_c_circuits_balance_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_balance"
+        )
+        package_path = (
+            "circuits_balance_poseidon2" if hash_name == "poseidon2" else "circuits_balance"
+        )
+    elif statement == "codehash_verification":
+        package_name = (
+            "thesis_c_circuits_codehash_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_codehash"
+        )
+        package_path = (
+            "circuits_codehash_poseidon2" if hash_name == "poseidon2" else "circuits_codehash"
+        )
+    elif statement == "eoa_activity":
+        package_name = (
+            "thesis_c_circuits_eoa_activity_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_eoa_activity"
+        )
+        package_path = (
+            "circuits_eoa_activity_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_eoa_activity"
+        )
+    elif statement == "eoa_activity_anchored":
+        package_name = (
+            "thesis_c_circuits_eoa_activity_anchored_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_eoa_activity_anchored"
+        )
+        package_path = (
+            "circuits_eoa_activity_anchored_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_eoa_activity_anchored"
+        )
+    elif statement == "eoa_activity_anchored_poseidon2":
+        package_name = "thesis_c_circuits_eoa_activity_anchored_poseidon2"
+        package_path = "circuits_eoa_activity_anchored_poseidon2"
+    elif statement == "storage_slot_membership":
+        package_name = (
+            "thesis_c_circuits_storage_slot_inclusion_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_storage_slot_inclusion"
+        )
+        package_path = (
+            "circuits_storage_slot_inclusion_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_storage_slot_inclusion"
+        )
+    else:
+        package_name = (
+            "thesis_c_circuits_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits"
+        )
+        package_path = "circuits_poseidon2" if hash_name == "poseidon2" else "circuits"
     return RunIdentity(
         run_id=f"memory_0__{hash_name}__ultra_honk__fixedrun",
         content_hash="0" * 64,
@@ -100,7 +155,7 @@ def _fixed_run_identity(hash_name: str = "keccak256") -> RunIdentity:
             "scheme": "ultra_honk",
             "source_proof_path": "memory",
             "source_proof_sha256": "",
-            "statement": "account_inclusion",
+            "statement": statement,
         },
     )
 
@@ -114,6 +169,7 @@ def _setup_harness(
     precreate_run_dir: bool = False,
     statements: list[str] | None = None,
     verify_exception: Exception | None = None,
+    real_statement: str = "account_inclusion",
 ):
     root = tmp_path
     monkeypatch.chdir(root)
@@ -121,7 +177,69 @@ def _setup_harness(
     input_path = root / "input.json"
     input_path.write_text("{}", encoding="utf-8")
 
-    package_dir = root / ("circuits_poseidon2" if hash_name == "poseidon2" else "circuits")
+    if real_statement == "balance_verification":
+        package_name = (
+            "thesis_c_circuits_balance_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_balance"
+        )
+        package_dir_name = (
+            "circuits_balance_poseidon2" if hash_name == "poseidon2" else "circuits_balance"
+        )
+    elif real_statement == "codehash_verification":
+        package_name = (
+            "thesis_c_circuits_codehash_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_codehash"
+        )
+        package_dir_name = (
+            "circuits_codehash_poseidon2" if hash_name == "poseidon2" else "circuits_codehash"
+        )
+    elif real_statement == "eoa_activity":
+        package_name = (
+            "thesis_c_circuits_eoa_activity_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_eoa_activity"
+        )
+        package_dir_name = (
+            "circuits_eoa_activity_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_eoa_activity"
+        )
+    elif real_statement == "eoa_activity_anchored":
+        package_name = (
+            "thesis_c_circuits_eoa_activity_anchored_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_eoa_activity_anchored"
+        )
+        package_dir_name = (
+            "circuits_eoa_activity_anchored_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_eoa_activity_anchored"
+        )
+    elif real_statement == "eoa_activity_anchored_poseidon2":
+        package_name = "thesis_c_circuits_eoa_activity_anchored_poseidon2"
+        package_dir_name = "circuits_eoa_activity_anchored_poseidon2"
+    elif real_statement == "storage_slot_membership":
+        package_name = (
+            "thesis_c_circuits_storage_slot_inclusion_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits_storage_slot_inclusion"
+        )
+        package_dir_name = (
+            "circuits_storage_slot_inclusion_poseidon2"
+            if hash_name == "poseidon2"
+            else "circuits_storage_slot_inclusion"
+        )
+    else:
+        package_name = (
+            "thesis_c_circuits_poseidon2"
+            if hash_name == "poseidon2"
+            else "thesis_c_circuits"
+        )
+        package_dir_name = "circuits_poseidon2" if hash_name == "poseidon2" else "circuits"
+
+    package_dir = root / package_dir_name
     package_dir.mkdir()
     target_dir = root / "target"
     target_dir.mkdir()
@@ -131,10 +249,10 @@ def _setup_harness(
 
     payload = _payload()
     baseline = _baseline(payload, hash_name=hash_name)
-    run_identity = _fixed_run_identity(hash_name)
+    run_identity = _fixed_run_identity(hash_name, real_statement)
     run_dir = (
         artifact_root
-        / "account_inclusion"
+        / real_statement
         / hash_name
         / "ultra_honk"
         / run_identity.run_id
@@ -143,22 +261,18 @@ def _setup_harness(
         run_dir.mkdir(parents=True)
 
     circuit_package = CircuitPackage(
-        statement="account_inclusion",
+        statement=real_statement,
         hash_name=hash_name,
         package_dir=package_dir,
-        nargo_package_name="thesis_c_circuits"
-        if hash_name == "keccak256"
-        else "thesis_c_circuits_poseidon2",
-        expected_circuit_json=target_dir
-        / (
-            "thesis_c_circuits.json"
-            if hash_name == "keccak256"
-            else "thesis_c_circuits_poseidon2.json"
-        ),
+        nargo_package_name=package_name,
+        expected_circuit_json=target_dir / f"{package_name}.json",
     )
 
     def fake_load_proof_path(path):
-        return [payload]
+        return [
+            payload,
+            payload,
+        ] if real_statement in {"eoa_activity", "eoa_activity_anchored", "eoa_activity_anchored_poseidon2"} else [payload]
 
     def fake_verify_account_payload(payload_arg, hash_variant):
         if verify_exception is not None:
@@ -166,7 +280,7 @@ def _setup_harness(
         return baseline
 
     def fake_resolve_circuit_package(statement, resolved_hash_name, repo_root="."):
-        assert statement == "account_inclusion"
+        assert statement == real_statement
         assert resolved_hash_name == hash_name
         return circuit_package
 
@@ -257,11 +371,11 @@ def _setup_harness(
         )
 
     class FakeStatement:
-        required_payloads = 1
+        required_payloads = 2 if real_statement in {"eoa_activity", "eoa_activity_anchored", "eoa_activity_anchored_poseidon2"} else 1
 
         def prepare(self, payloads, baseline_results):
             return PreparedStatement(
-                statement_name="account_inclusion",
+                statement_name=real_statement,
                 public_inputs={
                     "public_account_address": payloads[0].address,
                     "public_hash_variant_id": 1,
@@ -278,7 +392,7 @@ def _setup_harness(
     monkeypatch.setattr(benchmark_runner, "_build_backend", fake_build_backend)
     monkeypatch.setattr(benchmark_runner, "compile_isolated", fake_compile_isolated)
     monkeypatch.setattr(benchmark_runner, "execute_witness_isolated", fake_execute_witness_isolated)
-    monkeypatch.setattr(benchmark_runner, "STATEMENT_REGISTRY", {"account_inclusion": FakeStatement})
+    monkeypatch.setattr(benchmark_runner, "STATEMENT_REGISTRY", {real_statement: FakeStatement})
 
     config = BenchmarkConfig(
         input_path=input_path,
@@ -299,13 +413,18 @@ def _read_metadata(run_dir: Path) -> dict:
 
 
 def test_successful_keccak_isolated_benchmark_writes_metadata(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    config, run_dir, _, _ = _setup_harness(tmp_path, monkeypatch, hash_name="keccak256")
+    config, run_dir, package_prover_toml, _ = _setup_harness(
+        tmp_path, monkeypatch, hash_name="keccak256"
+    )
 
     rows = run_benchmarks(config)
 
     assert len(rows) == 1
     assert rows[0].status == "ok"
     assert rows[0].verification_ok is True
+    assert rows[0].proving_system == "ultra_honk"
+    assert config.bb_binary == "/Users/doodleaks/.bb/bb"
+    assert package_prover_toml.read_text(encoding="utf-8") == "sentinel-package\n"
 
     metadata = _read_metadata(run_dir)
     assert metadata["status"] == "verified"
@@ -322,6 +441,24 @@ def test_successful_keccak_isolated_benchmark_writes_metadata(tmp_path: Path, mo
     assert metadata["file_sha256"]["proof"]
     assert metadata["file_sha256"]["public_inputs"]
     assert metadata["file_sha256"]["timings"]
+
+
+def test_runner_rejects_ultra_plonk_backend(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    config, _, _, _ = _setup_harness(tmp_path, monkeypatch, hash_name="keccak256")
+    config.backends = ["ultra_plonk"]
+
+    with pytest.raises(ValueError, match="Unsupported backend\\(s\\) for benchmark runner"):
+        run_benchmarks(config)
+
+
+def test_runner_rejects_non_ultra_honk_proving_system(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config, _, _, _ = _setup_harness(tmp_path, monkeypatch, hash_name="keccak256")
+    config.proving_system = "ultra_plonk"
+
+    with pytest.raises(ValueError, match="Unsupported proving system for benchmark runner"):
+        run_benchmarks(config)
 
 
 @pytest.mark.parametrize(
@@ -412,6 +549,155 @@ def test_poseidon2_account_inclusion_uses_real_isolated_route(
     )
 
 
+def test_poseidon2_eoa_activity_uses_real_isolated_route(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config, run_dir, _, _ = _setup_harness(
+        tmp_path,
+        monkeypatch,
+        hash_name="poseidon2",
+        statements=["eoa_activity"],
+        real_statement="eoa_activity",
+    )
+
+    rows = run_benchmarks(config)
+
+    assert len(rows) == 1
+    assert rows[0].statement == "eoa_activity"
+    assert rows[0].status == "ok"
+    assert rows[0].verification_ok is True
+    assert rows[0].error is None
+
+    metadata = _read_metadata(run_dir)
+    assert metadata["status"] == "verified"
+    assert metadata["hash_name"] == "poseidon2"
+    assert metadata["nargo_package_name"] == "thesis_c_circuits_eoa_activity_poseidon2"
+    assert metadata["package_dir"].endswith("circuits_eoa_activity_poseidon2")
+    assert metadata["witness_name"] == (
+        "poseidon2_memory_0__poseidon2__ultra_honk__fixedrun_witness"
+    )
+
+
+@pytest.mark.parametrize(
+    ("hash_name", "package_name", "package_dir"),
+    [
+        ("keccak256", "thesis_c_circuits_balance", "circuits_balance"),
+        (
+            "poseidon2",
+            "thesis_c_circuits_balance_poseidon2",
+            "circuits_balance_poseidon2",
+        ),
+    ],
+)
+def test_balance_verification_uses_real_isolated_route(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    hash_name: str,
+    package_name: str,
+    package_dir: str,
+) -> None:
+    config, run_dir, _, _ = _setup_harness(
+        tmp_path,
+        monkeypatch,
+        hash_name=hash_name,
+        statements=["balance_verification"],
+        real_statement="balance_verification",
+    )
+
+    rows = run_benchmarks(config)
+
+    assert len(rows) == 1
+    assert rows[0].statement == "balance_verification"
+    assert rows[0].status == "ok"
+    assert rows[0].verification_ok is True
+
+    metadata = _read_metadata(run_dir)
+    assert metadata["statement"] == "balance_verification"
+    assert metadata["hash_name"] == hash_name
+    assert metadata["nargo_package_name"] == package_name
+    assert metadata["package_dir"].endswith(package_dir)
+
+
+@pytest.mark.parametrize(
+    ("hash_name", "package_name", "package_dir"),
+    [
+        ("keccak256", "thesis_c_circuits_codehash", "circuits_codehash"),
+        (
+            "poseidon2",
+            "thesis_c_circuits_codehash_poseidon2",
+            "circuits_codehash_poseidon2",
+        ),
+    ],
+)
+def test_codehash_verification_uses_real_isolated_route(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    hash_name: str,
+    package_name: str,
+    package_dir: str,
+) -> None:
+    config, run_dir, _, _ = _setup_harness(
+        tmp_path,
+        monkeypatch,
+        hash_name=hash_name,
+        statements=["codehash_verification"],
+        real_statement="codehash_verification",
+    )
+
+    rows = run_benchmarks(config)
+
+    assert len(rows) == 1
+    assert rows[0].statement == "codehash_verification"
+    assert rows[0].status == "ok"
+    assert rows[0].verification_ok is True
+
+    metadata = _read_metadata(run_dir)
+    assert metadata["statement"] == "codehash_verification"
+    assert metadata["hash_name"] == hash_name
+    assert metadata["nargo_package_name"] == package_name
+    assert metadata["package_dir"].endswith(package_dir)
+
+
+@pytest.mark.parametrize(
+    ("hash_name", "package_name", "package_dir"),
+    [
+        ("keccak256", "thesis_c_circuits_eoa_activity_anchored", "circuits_eoa_activity_anchored"),
+        (
+            "poseidon2",
+            "thesis_c_circuits_eoa_activity_anchored_poseidon2",
+            "circuits_eoa_activity_anchored_poseidon2",
+        ),
+    ],
+)
+def test_eoa_activity_anchored_uses_real_isolated_route_for_fixture_backed_execution(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    hash_name: str,
+    package_name: str,
+    package_dir: str,
+) -> None:
+    config, run_dir, _, _ = _setup_harness(
+        tmp_path,
+        monkeypatch,
+        hash_name=hash_name,
+        statements=["eoa_activity_anchored"],
+        real_statement="eoa_activity_anchored",
+    )
+
+    rows = run_benchmarks(config)
+
+    assert len(rows) == 1
+    assert rows[0].statement == "eoa_activity_anchored"
+    assert rows[0].status == "ok"
+    assert rows[0].verification_ok is True
+
+    metadata = _read_metadata(run_dir)
+    assert metadata["statement"] == "eoa_activity_anchored"
+    assert metadata["hash_name"] == hash_name
+    assert metadata["nargo_package_name"] == package_name
+    assert metadata["package_dir"].endswith(package_dir)
+
+
 def test_poseidon2_missing_adapter_is_error_not_proxy(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -435,7 +721,7 @@ def test_poseidon2_missing_adapter_is_error_not_proxy(
     assert not (run_dir / "metadata.json").exists()
 
 
-def test_poseidon2_mixed_statement_missing_adapter_keeps_unsupported_statement_proxy(
+def test_poseidon2_mixed_statement_missing_adapter_has_no_storage_proxy(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     config, run_dir, _, _ = _setup_harness(
@@ -452,47 +738,36 @@ def test_poseidon2_mixed_statement_missing_adapter_keeps_unsupported_statement_p
     rows = run_benchmarks(config)
 
     assert len(rows) == 2
-    by_statement = {row.statement: row for row in rows}
-    assert by_statement["storage_slot_membership"].status == "proxy"
-    assert (
-        by_statement["storage_slot_membership"].error
-        == "proxy_poseidon2_statement_not_in_circuit"
-    )
-    assert by_statement["account_inclusion"].status == "error"
-    assert by_statement["account_inclusion"].error is not None
-    assert "Poseidon2 digest adapter is not configured" in by_statement["account_inclusion"].error
+    assert {row.statement for row in rows} == {
+        "storage_slot_membership",
+        "account_inclusion",
+    }
+    assert all(row.status == "error" for row in rows)
+    assert all(row.error is not None for row in rows)
+    assert all("Poseidon2 digest adapter is not configured" in row.error for row in rows)
+    assert all("proxy" not in row.error for row in rows)
     assert not (run_dir / "metadata.json").exists()
 
 
-def test_unsupported_poseidon2_statement_remains_proxy(
+def test_storage_poseidon2_uses_real_route(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    monkeypatch.setenv("THESIS_C_POSEIDON2_CMD", "poseidon2-test {hex0x}")
     config, run_dir, _, _ = _setup_harness(
         tmp_path,
         monkeypatch,
         hash_name="poseidon2",
         statements=["storage_slot_membership"],
-    )
-
-    monkeypatch.setattr(
-        benchmark_runner,
-        "compile_isolated",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("compile path should not run")),
-    )
-    monkeypatch.setattr(
-        benchmark_runner,
-        "execute_witness_isolated",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("execute path should not run")),
-    )
-    monkeypatch.setattr(
-        benchmark_runner,
-        "_build_backend",
-        lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("backend path should not run")),
+        real_statement="storage_slot_membership",
     )
 
     rows = run_benchmarks(config)
 
     assert len(rows) == 1
-    assert rows[0].status == "proxy"
-    assert rows[0].error == "proxy_poseidon2_statement_not_in_circuit"
-    assert not (run_dir / "metadata.json").exists()
+    assert rows[0].status == "ok", rows[0].error
+    assert rows[0].verification_ok is True
+    metadata = _read_metadata(run_dir)
+    assert metadata["statement"] == "storage_slot_membership"
+    assert metadata["nargo_package_name"] == (
+        "thesis_c_circuits_storage_slot_inclusion_poseidon2"
+    )

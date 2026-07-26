@@ -1,13 +1,13 @@
 # Poseidon2 Pipeline Contract
 
 ## Summary
-This document freezes the current Poseidon2 contract between Besu, Noir, and the thesis benchmark pipeline before any circuit changes.
+This document records the Poseidon2 contract between Besu, Noir, and the thesis benchmark pipeline.
 
 The current state is:
 - Besu has the Poseidon2 proof-path hashing path implemented.
 - Noir compatibility vectors exist for the raw permutation, field sponge, and byte-hash adapter.
-- The thesis `account_inclusion` circuit is still Keccak-only.
-- Poseidon2 rows in the benchmark pipeline are currently proxy rows, not full in-circuit Poseidon2 proofs.
+- Dedicated Poseidon2 circuit packages now exist for account inclusion, balance verification, and stored codeHash verification.
+- EOA activity is a supplied-root two-state statement and remains real-dataset gated per hash variant.
 
 ## Poseidon2 Semantics
 The Poseidon2 byte-hash contract used by the pipeline is:
@@ -46,14 +46,19 @@ It does not affect:
 
 That makes the Poseidon2 path a proof-path and trie-hash concern only, not a general-purpose hash replacement.
 
-## Thesis C Current Limitation
-The current thesis circuit state is intentionally incomplete for Poseidon2:
+## Thesis C Circuit Scope
+The original `circuits/` package remains the Keccak account-inclusion package.
+Poseidon2 is implemented through separate packages and entrypoints so each benchmark arm has unambiguous witness and circuit assumptions.
 
-- `circuits/src/hash_poseidon2.nr` is a placeholder
-- `circuits/src/account_inclusion.nr` is Keccak-only
-- `thesis_c/benchmark/runner.py` emits `proxy` rows for Poseidon2 `account_inclusion` with reason `proxy_hash_cost_poseidon2_not_in_circuit`
+Current Poseidon2 packages preserve the Besu byte-hash semantics above and use Field-form root/linkage where needed:
 
-So today, Poseidon2 account-inclusion benchmark rows measure pipeline cost and routing behavior, not an honest Poseidon2 circuit proof.
+- `circuits_poseidon2`
+- `circuits_balance_poseidon2`
+- `circuits_codehash_poseidon2`
+- `circuits_eoa_activity_poseidon2`
+- `circuits_storage_slot_inclusion_poseidon2`
+
+Unsupported future statements may still use `proxy` or `error` rows, but supported Poseidon2 account-inclusion, balance, and codeHash routes are no longer proxy-only.
 
 ## Benchmark Row Meaning
 The benchmark pipeline already distinguishes:
@@ -62,10 +67,11 @@ The benchmark pipeline already distinguishes:
 - `proxy`
 - `error`
 
-For Poseidon2 account inclusion:
-- `proxy` means the hash-cost arm is being tracked intentionally even though the circuit is not yet implemented.
-- `missing_dataset` means the Poseidon2 dataset arm was not available.
-- `ok` remains reserved for a real executed proof path.
+For supported Poseidon2 statements:
+- `ok` means a real isolated circuit/proving path executed and verified.
+- `proxy` is reserved for unsupported or deliberately deferred statement/hash combinations.
+- `missing_dataset` means the dataset arm was not available.
+- `error` means preparation, circuit execution, proving, or verification failed.
 
 ## Future-Proofing Note
 `account_inclusion` is the first proof statement used to validate the pipeline, not the final thesis scope.
@@ -87,7 +93,8 @@ Why:
 - `hash_variant_id` branching does not leak into one mixed circuit while Poseidon2 is still maturing
 - benchmark comparisons stay cleaner and easier to interpret
 
-## Assumptions
-- `docs/` did not previously exist in `thesis_c`, so this file is newly added.
-- The Noir compatibility record in `test_noir/poseidon2_noir_compatibility.md` remains unchanged.
-- No code changes or benchmark runs are required for this document-only update.
+## Freeze Status
+
+The base statement families and storage benchmark policy are frozen in
+`docs/task3f_freeze.md`. This document remains a semantics boundary record;
+benchmark results and toolchain availability are recorded separately.

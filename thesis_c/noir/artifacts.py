@@ -52,9 +52,73 @@ def resolve_circuit_package(
             "circuits",
             "thesis_c_circuits",
         ),
+        ("account_inclusion_anchored", "keccak256"): (
+            "circuits_account_inclusion_anchored",
+            "thesis_c_circuits_account_inclusion_anchored",
+        ),
+        ("account_inclusion_anchored_poseidon2", "poseidon2"): (
+            "circuits_account_inclusion_anchored_poseidon2",
+            "thesis_c_circuits_account_inclusion_anchored_poseidon2",
+        ),
         ("account_inclusion", "poseidon2"): (
             "circuits_poseidon2",
             "thesis_c_circuits_poseidon2",
+        ),
+        ("balance_verification_anchored", "keccak256"): (
+            "circuits_balance_anchored",
+            "thesis_c_circuits_balance_anchored",
+        ),
+        ("balance_verification_anchored_poseidon2", "poseidon2"): (
+            "circuits_balance_anchored_poseidon2",
+            "thesis_c_circuits_balance_anchored_poseidon2",
+        ),
+        ("balance_verification", "keccak256"): (
+            "circuits_balance",
+            "thesis_c_circuits_balance",
+        ),
+        ("balance_verification", "poseidon2"): (
+            "circuits_balance_poseidon2",
+            "thesis_c_circuits_balance_poseidon2",
+        ),
+        ("codehash_verification_anchored", "keccak256"): (
+            "circuits_codehash_anchored",
+            "thesis_c_circuits_codehash_anchored",
+        ),
+        ("codehash_verification_anchored_poseidon2", "poseidon2"): (
+            "circuits_codehash_anchored_poseidon2",
+            "thesis_c_circuits_codehash_anchored_poseidon2",
+        ),
+        ("codehash_verification", "keccak256"): (
+            "circuits_codehash",
+            "thesis_c_circuits_codehash",
+        ),
+        ("codehash_verification", "poseidon2"): (
+            "circuits_codehash_poseidon2",
+            "thesis_c_circuits_codehash_poseidon2",
+        ),
+        ("eoa_activity", "keccak256"): (
+            "circuits_eoa_activity",
+            "thesis_c_circuits_eoa_activity",
+        ),
+        ("eoa_activity", "poseidon2"): (
+            "circuits_eoa_activity_poseidon2",
+            "thesis_c_circuits_eoa_activity_poseidon2",
+        ),
+        ("eoa_activity_anchored", "keccak256"): (
+            "circuits_eoa_activity_anchored",
+            "thesis_c_circuits_eoa_activity_anchored",
+        ),
+        ("eoa_activity_anchored_poseidon2", "poseidon2"): (
+            "circuits_eoa_activity_anchored_poseidon2",
+            "thesis_c_circuits_eoa_activity_anchored_poseidon2",
+        ),
+        ("storage_slot_membership", "keccak256"): (
+            "circuits_storage_slot_inclusion",
+            "thesis_c_circuits_storage_slot_inclusion",
+        ),
+        ("storage_slot_membership", "poseidon2"): (
+            "circuits_storage_slot_inclusion_poseidon2",
+            "thesis_c_circuits_storage_slot_inclusion_poseidon2",
         ),
     }
     try:

@@ -86,8 +86,8 @@ Important scope note:
 
 - This stage uses Python baseline verification and bounded pre-normalized witness data.
 - It is not yet a full generalized Ethereum MPT verifier covering every edge case.
-- Noir `storage_slot_membership` and `eoa_activity` statements are intentionally out of
-  scope for this stage.
+- Noir `storage_slot_membership` and `eoa_activity` have isolated package routes;
+  their current proof-language limits remain bounded as documented.
 - Python-side storage proof checks are available via `thesis-c verify-storage`.
 
 ### Bounded assumptions
@@ -104,10 +104,10 @@ Important scope note:
 | --- | --- | --- |
 | Root equality and node hash chain | Fully constrained in Noir | `keccak(node_rlp)` chain is enforced from root to leaf node hash. |
 | Branch child binding | Fully constrained in Noir (normalized) | Circuit takes normalized `3 x 16 x 32` branch child arrays and enforces selected child at `path_nibble` for each branch hop. |
-| Account leaf fields binding | Partially constrained in Noir | Circuit recomputes account commitment from `(nonce,balance,storageRoot,codeHash)` and checks against a public leaf-value commitment anchor. |
-| Leaf path compact decoding | Trusted from Python preprocessing | Noir checks suffix/path consistency against hashed address path, but compact-path decode remains Python-side. |
-| Full RLP decoding (branch and leaf semantics) | Trusted from Python preprocessing | Node/list/value decoding is still done in Python baseline/precheck logic. |
-| Poseidon2 in-circuit hashing | Not in-circuit (`proxy`) | Poseidon2 remains intentionally unimplemented in Noir until an honest implementation is added. |
+| Account leaf fields binding | Fully constrained in Noir | Authenticated terminal bytes are parsed through canonical nested account RLP constraints. |
+| Leaf path compact decoding | Constrained in Noir | Compact-path flags, suffix consumption, and terminal linkage are checked in the circuit. |
+| Full RLP decoding (branch and leaf semantics) | Constrained for supported proof language | Canonical account and storage RLP parsing is bounded to the documented proof shapes. |
+| Poseidon2 in-circuit hashing | Supported in isolated packages | Poseidon2 uses the configured byte/Field contract; the Java adapter remains Python preparation infrastructure. |
 
 ### Verification metadata emitted in benchmark rows
 

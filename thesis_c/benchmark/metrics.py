@@ -32,6 +32,7 @@ class BenchmarkRecord:
     status: str = "ok"
     error: str | None = None
     extras: dict[str, Any] | None = None
+    proving_system: str = "ultra_honk"
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)

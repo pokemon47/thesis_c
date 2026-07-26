@@ -1,0 +1,111 @@
+{
+  "schema_version": "variable_depth_account_fixture_v1",
+  "fixture_classification": "synthetic controlled Besu state; development-only variable-depth fixture",
+  "hash_variant": "poseidon2",
+  "account_proof_depth": 2,
+  "storage_proof_depth": 1,
+  "request": {
+    "method": "eth_getProof",
+    "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "storage_keys": [
+      "0x0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "block": "0x0"
+  },
+  "metadata": {
+    "contract_address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "raw_slot": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "expected_value": "0x000000000000000000000000000000000000000000000000000000000000002a",
+    "block_number": 0,
+    "block_hash": "0xb04fe1a945f2915a15be12cfd77ec6e62ef63517e017128680a1784a8fa0e1bc",
+    "state_root": "0x1fbaf5da3884461c8f83cc0ad98cffe0e6825a5c8fdcfb4430b44013235af7ca",
+    "client_version": "besu/v26.7-develop-b83503e/osx_aarch_64/openjdk-java-21",
+    "besu_commit": "b83503e",
+    "poseidon2_parameter_set": "BN254 width4 rate3 capacity1; 8 full/56 partial; 31-byte LE chunks",
+    "genesis_sha256": "e1067088138a4799086ba2c6a6f781ea580993652cf69f04eb0efd8f27a48126",
+    "source_rpc_response_sha256": "3c396733c3c7596cfc8ce575bcad3573b19cb38116d35fb1ca84f8eb64f00b3c",
+    "source_rpc_response_path": "/private/tmp/variable-poseidon2-proof.json",
+    "data_path": "/private/tmp/besu_storage_fixture_poseidon2_depth2",
+    "rpc_port": 18545,
+    "engine_port": 18551,
+    "startup_command": "JAVA_OPTS=\"-Dbesu.experimental.proof-path-hashing=poseidon2\" ./build/install/besu/bin/besu --genesis-file=/private/tmp/storage-fixture-genesis-poseidon2-depth2.json --sync-mode=FULL --data-storage-format=X_BONSAI_ARCHIVE_PROOFS --data-path=/private/tmp/besu_storage_fixture_poseidon2_depth2 --Xbonsai-archive-trie-node-checkpoint-interval=1 --rpc-http-enabled=true --rpc-http-host=127.0.0.1 --rpc-http-port=18545 --rpc-http-api=ETH,NET,WEB3 --rpc-http-max-batch-size=2000 --p2p-enabled=false --engine-rpc-port=18551",
+    "validation": {
+      "account_proof": true,
+      "storage_proof": true,
+      "storage_root_linkage": true,
+      "nonzero_value": true
+    }
+  },
+  "rpc_response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "accountProof": [
+        "0xf851a0202ae77ecfc7d415757569cccf45f6c7855fd7dc6fda5f8bded25976a2ffd8cba010327ff5ddf601f04b9aa0ba61cbd7a074282a9829a0530f56b29a937e1bd954808080808080808080808080808080",
+        "0xf869a033ab10e3f2db70c50d4e291665db5d57e3063812b04b35073801b641b6f81ed2b846f8440180a014fec2c4f489da43a804e50e126bbc8f1a49656247c73179c3ba0599c46cc285a00dd9fc23b9e0972b48f0c93ebb805660239a90ba27a337a9f24333a8703975cd"
+      ],
+      "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+      "balance": "0x0",
+      "codeHash": "0x0dd9fc23b9e0972b48f0c93ebb805660239a90ba27a337a9f24333a8703975cd",
+      "nonce": "0x1",
+      "storageHash": "0x14fec2c4f489da43a804e50e126bbc8f1a49656247c73179c3ba0599c46cc285",
+      "storageProof": [
+        {
+          "key": "0x0",
+          "value": "0x2a",
+          "proof": [
+            "0xe3a1200b63a53787021a4a962a452c2921b3663aff1ffd8d5510540f8e659e782956f12a"
+          ]
+        }
+      ]
+    }
+  },
+  "block_response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "number": "0x0",
+      "hash": "0xb04fe1a945f2915a15be12cfd77ec6e62ef63517e017128680a1784a8fa0e1bc",
+      "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "nonce": "0x0000000000000000",
+      "sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "transactionsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "stateRoot": "0x1fbaf5da3884461c8f83cc0ad98cffe0e6825a5c8fdcfb4430b44013235af7ca",
+      "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+      "miner": "0x0000000000000000000000000000000000000000",
+      "difficulty": "0x1",
+      "totalDifficulty": "0x1",
+      "extraData": "0x00000000000000000000000000000000000000000000000000000000000000007e5f4552091a69125d5dfcb7b8c2659029395bdf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "baseFeePerGas": "0x3b9aca00",
+      "size": "0x274",
+      "gasLimit": "0x1c9c380",
+      "gasUsed": "0x0",
+      "timestamp": "0x0",
+      "uncles": [],
+      "transactions": []
+    }
+  },
+  "result": {
+    "accountProof": [
+      "0xf851a0202ae77ecfc7d415757569cccf45f6c7855fd7dc6fda5f8bded25976a2ffd8cba010327ff5ddf601f04b9aa0ba61cbd7a074282a9829a0530f56b29a937e1bd954808080808080808080808080808080",
+      "0xf869a033ab10e3f2db70c50d4e291665db5d57e3063812b04b35073801b641b6f81ed2b846f8440180a014fec2c4f489da43a804e50e126bbc8f1a49656247c73179c3ba0599c46cc285a00dd9fc23b9e0972b48f0c93ebb805660239a90ba27a337a9f24333a8703975cd"
+    ],
+    "address": "0xf2e246bb76df876cef8b38ae84130f4f55de395b",
+    "balance": "0x0",
+    "codeHash": "0x0dd9fc23b9e0972b48f0c93ebb805660239a90ba27a337a9f24333a8703975cd",
+    "nonce": "0x1",
+    "storageHash": "0x14fec2c4f489da43a804e50e126bbc8f1a49656247c73179c3ba0599c46cc285",
+    "storageProof": [
+      {
+        "key": "0x0",
+        "value": "0x2a",
+        "proof": [
+          "0xe3a1200b63a53787021a4a962a452c2921b3663aff1ffd8d5510540f8e659e782956f12a"
+        ]
+      }
+    ],
+    "stateRoot": "0x1fbaf5da3884461c8f83cc0ad98cffe0e6825a5c8fdcfb4430b44013235af7ca"
+  }
+}

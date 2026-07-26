@@ -1,0 +1,9 @@
+[package]
+name = "thesis_c_circuits_codehash_anchored_poseidon2"
+type = "bin"
+authors = ["Thesis C"]
+compiler_version = ">=1.0.0"
+
+[dependencies]
+keccak256 = { tag = "v0.1.3", git = "https://github.com/noir-lang/keccak256" }
+poseidon = { path = "../../noir-poseidon" }
